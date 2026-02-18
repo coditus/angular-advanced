@@ -1,0 +1,39 @@
+<app-dialog 
+  [isOpen]="isOpen()" 
+  [title]="'Crear nuevo tablero'" 
+  (closeEvent)="resetAndClose()"
+>
+  <div class="space-y-5">
+    <div class="flex flex-col gap-2">
+      <label for="name" class="text-sm font-medium text-gray-700">Nombre del tablero</label>
+      <input 
+        id="name"
+        type="text" 
+        [(ngModel)]="name"
+        placeholder="Ej: Proyecto Alpha"
+        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
+      />
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <label for="desc" class="text-sm font-medium text-gray-700">Descripción (opcional)</label>
+      <textarea 
+        id="desc"
+        [(ngModel)]="description"
+        rows="3"
+        placeholder="¿De qué trata este tablero?"
+        class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all resize-none"
+      ></textarea>
+    </div>
+  </div>
+
+  <div footer-actions class="flex gap-3">
+    <button 
+      (click)="handleSave()"
+      [disabled]="!name().trim()"
+      class="px-5 py-2.5 bg-indigo-600 text-white text-sm font-semibold rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-sm"
+    >
+      Crear Tablero
+    </button>
+  </div>
+</app-dialog>

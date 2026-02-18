@@ -1,0 +1,27 @@
+<div class="p-6 min-h-screen flex flex-col">
+  @if (loading()) {
+    <div class="text-center text-gray-500 py-10">Cargando tablero...</div>
+  } @else if (error()) {
+    <div class="text-center text-red-500 py-10">
+      <button type="button" (click)="history.back()" class="mb-4 px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700">Volver</button>
+      {{ error() }}
+    </div>
+  } @else if (board()) {
+    <div class="mb-6 flex items-center gap-4">
+      <button type="button" (click)="history.back()" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 text-gray-700">Volver</button>
+      <div>
+        <h1 class="text-2xl font-bold mb-2">{{ board()?.name }}</h1>
+      </div>
+    </div>
+    <div class="flex-1 overflow-x-auto">
+      <div class="flex flex-row justify-center gap-6 pb-4">
+        @for (col of getColumns(); track col.id) {
+          <div class="bg-gray-100 rounded-lg min-w-[260px] max-w-xs w-full p-4 flex-shrink-0 h-full flex flex-1 flex-col">
+            <h2 class="font-semibold text-lg mb-3 text-gray-800">{{ col.name }}</h2>
+            <!-- Aquí se pueden renderizar las tareas de la columna en el futuro -->
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

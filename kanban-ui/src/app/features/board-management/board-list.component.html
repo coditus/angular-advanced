@@ -1,0 +1,81 @@
+<div class="p-6">
+  <div class="flex justify-end mb-4">
+    <button (click)="addBoard()" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+      Crear nuevo tablero
+    </button>
+  </div>
+
+  @if (loading()) {
+    <div class="fixed inset-0 z-50 flex items-center justify-center bg-opacity-40">
+      <div class="flex flex-col items-center">
+        <div
+          class="w-12 h-12 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4 opacity-80"
+        ></div>
+        <p class="text-sm">Cargando tableros...</p>
+      </div>
+    </div>
+  }
+
+  @if (error()) {
+    <div class="flex flex-col items-center justify-center text-red-500">
+      <p>{{ error() }}</p>
+      <button
+        (click)="loadBoards()"
+        type="button"
+        class="bg-white cursor-pointer p-2 rounded border-solid border-2 border-red-500"
+      >
+        Reintentar
+      </button>
+    </div>
+  }
+
+  @if (!loading() && !error()) {
+    @if (boards().length === 0) {
+      <div class="rounded p-6 text-center">
+        <p class="text-sm">No hay tableros creados</p>
+        <p class="text-sm">
+          Comienza creando tu
+          <button
+            class="bg-transparent cursor-pointer no-border text-sky-400"
+            type="button"
+            (click)="addBoard()"
+          >
+            primer tablero Kanban
+          </button>
+        </p>
+      </div>
+    } @else {
+      <div class="flex flex-col gap-4">
+        @for (board of boards(); track board.id) {
+          <div class="rounded bg-white p-4 shadow cursor-pointer hover:bg-blue-50 transition" [routerLink]="['/board-viewer', board.id]">
+            <div class="flex justify-between items-center mb-2">
+              <h2 class="font-semibold text-lg">{{ board.name }}</h2>
+              <span class="text-gray-600">{{ board.tasks.length }} tareas</span>
+            </div>
+
+            @if (board.description) {
+              <p class="text-gray-700">{{ board.description }}</p>
+            }
+
+            <div class="flex flex-row justify-between items-end mt-4">
+              <div>
+                <button [routerLink]="['/boards', board.id, 'edit']" (click)="$event.stopPropagation()" class="bg-yellow-400 text-white px-3 py-1 rounded hover:bg-yellow-500 mr-2">Editar</button>
+              </div>
+              <div class="flex flex-col items-end">
+                <small>Creado: {{ board.createdAt | date: 'short' }}</small>
+                <small>Actualizado: {{ board.updatedAt | date: 'short' }}</small>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+</div>
+
+<app-add-board-modal 
+  [isOpen]="showAddBoardModal()"
+  (closed)="closeAddBoardModal()"
+  (boardCreated)="onAddBoard($event)"
+/>
+

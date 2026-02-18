@@ -1,0 +1,31 @@
+<div class="max-w-2xl mx-auto mt-10 p-8 bg-white rounded-lg shadow-lg">
+  <h1 class="text-2xl font-bold mb-6">Editar Tablero</h1>
+  @if (loading()) {
+    <div class="text-center text-gray-500">Cargando...</div>
+  } @else if (error()) {
+    <div class="text-center text-red-500">{{ error() }}</div>
+  } @else if (board()) {
+    <form (ngSubmit)="onSave()" class="flex flex-col gap-4">
+      <label for="name" class="font-medium">Nombre</label>
+      <input id="name" [(ngModel)]="editedBoard().name" name="name" required class="border rounded px-3 py-2" />
+
+      <label for="description" class="font-medium">Descripción</label>
+      <textarea id="description" [(ngModel)]="editedBoard().description" name="description" class="border rounded px-3 py-2"></textarea>
+
+      <div class="flex justify-between items-center mt-4">
+        <div>
+          <button type="button" (click)="onDelete()" class="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700">Eliminar</button>
+        </div>
+        <div class="flex gap-2">
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Guardar</button>
+          <button type="button" (click)="onCancel()" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Cancelar</button>
+        </div>
+      </div>
+    </form>
+  }
+  <app-delete-board-modal
+    [isOpen]="showDeleteModal()"
+    (closed)="onDeleteCancel()"
+    (confirmed)="onDeleteConfirm()"
+  />
+</div>

@@ -1,0 +1,39 @@
+@if (isOpen()) {
+  <div 
+    class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-sm transition-all"
+    (click)="close()"
+  >
+    <div 
+      class="bg-white rounded-2xl shadow-xl w-full max-w-lg transform transition-all overflow-hidden border border-gray-100"
+      (click)="$event.stopPropagation()"
+    >
+      <div class="px-6 py-5 flex justify-between items-center bg-gray-50/50">
+        <h3 class="text-lg font-bold text-gray-900">{{ title() }}</h3>
+        <button 
+          (click)="close()" 
+          class="p-2 rounded-full hover:bg-gray-200 text-gray-500 transition-colors"
+        >
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="px-6 py-8">
+        <ng-content></ng-content>
+      </div>
+
+      @if (showFooter()) {
+        <div class="px-6 py-4 bg-gray-50 flex justify-end gap-3">
+          <button 
+            (click)="close()"
+            class="px-4 py-2 text-sm font-semibold text-gray-600 hover:text-gray-800 transition-colors"
+          >
+            Cancelar
+          </button>
+          <ng-content select="[footer-actions]"></ng-content>
+        </div>
+      }
+    </div>
+  </div>
+}
