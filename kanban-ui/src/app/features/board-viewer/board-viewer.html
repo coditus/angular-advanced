@@ -12,16 +12,33 @@
       <div>
         <h1 class="text-2xl font-bold mb-2">{{ board()?.name }}</h1>
       </div>
+      <button type="button" (click)="openAddTaskModal()" class="ml-4 px-4 py-2 rounded bg-blue-600 hover:bg-blue-700 text-white">Agregar tarea</button>
     </div>
     <div class="flex-1 overflow-x-auto">
       <div class="flex flex-row justify-center gap-6 pb-4">
-        @for (col of getColumns(); track col.id) {
+        @for (col of columns(); track col.id) {
           <div class="bg-gray-100 rounded-lg min-w-[260px] max-w-xs w-full p-4 flex-shrink-0 h-full flex flex-1 flex-col">
             <h2 class="font-semibold text-lg mb-3 text-gray-800">{{ col.name }}</h2>
-            <!-- Aquí se pueden renderizar las tareas de la columna en el futuro -->
+            <div class="flex flex-col gap-2">
+              @for (task of tasksByColumn()[col.id]; track task.id) {
+                <div class="bg-white rounded shadow p-2 flex flex-col gap-1">
+                  <div class="text-xs text-gray-400 font-mono">#{{ task.id }}</div>
+                  <div class="font-semibold truncate" title="{{ task.title }}">{{ task.title }}</div>
+                  @if (task.assignedTo) {
+                    <div class="text-xs text-gray-500 truncate" title="{{ task.assignedTo }}">{{ task.assignedTo }}</div>
+                  }
+                </div>
+              }
+            </div>
           </div>
         }
       </div>
     </div>
   }
 </div>
+
+  <app-add-task-modal
+    [isOpen]="showAddTaskModal()"
+    (closed)="closeAddTaskModal()"
+    (taskCreated)="handleTaskCreated($event)"
+  ></app-add-task-modal>

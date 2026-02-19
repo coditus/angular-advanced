@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Board } from '../models/board.model';
+import { Task } from '../models/task.model';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -29,5 +30,14 @@ export class BoardService {
 
   deleteBoard(id: string): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
+  }
+
+  // --- Task methods ---
+  getTasks(boardId: string): Observable<Task[]> {
+    return this.http.get<Task[]>(`${this.apiUrl}/${boardId}/tasks`);
+  }
+
+  createTask(boardId: string, task: Partial<Task>): Observable<Board> {
+    return this.http.post<Board>(`${this.apiUrl}/${boardId}/tasks`, task);
   }
 }
